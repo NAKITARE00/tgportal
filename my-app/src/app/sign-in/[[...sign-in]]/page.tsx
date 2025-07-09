@@ -45,12 +45,15 @@ export default function SignInPage() {
                 <Clerk.FieldError className="text-red-500 text-xs" />
               </Clerk.Field>
 
-              <SignIn.Action
-                submit
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-              >
-                Continue with Email
-              </SignIn.Action>
+              {/* Add margin below the field group */}
+              <div className="mt-6">
+                <SignIn.Action
+                  submit
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-lg transition-colors focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                >
+                  Continue with Email
+                </SignIn.Action>
+              </div>
             </SignIn.Step>
 
             <SignIn.Step name="verifications">
@@ -61,9 +64,7 @@ export default function SignInPage() {
                       Check your email
                     </h1>
                     <p className="text-gray-500 mt-2">
-                      We sent a verification code to{" "}
-                      <SignIn.SafeIdentifier className="font-medium text-gray-700" />
-                      .
+                      We sent a verification code to <SignIn.SafeIdentifier />.
                     </p>
                   </div>
 
