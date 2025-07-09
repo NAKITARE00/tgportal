@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import AddItemModal from "@/components/modals/AddGadgetModal";
+import Sidebar from "@/components/Sidebar";
 
 const mockGadgets = [
   { id: 1, name: "Router X", status: "Active", station: "Shell Westlands" },
@@ -32,55 +33,77 @@ export default function GadgetsPage() {
   };
 
   return (
-    <div className="p-6 h-screen bg-white text-black shadow-md rounded-lg">
-      <div className="flex justify-between items-center mb-6">
-        <h1 className="text-2xl font-bold">Gadgets</h1>
-        <button
-          onClick={() => setIsModalOpen(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
-        >
-          Add Gadget
-        </button>
+    <div className="flex h-screen bg-white text-black">
+      <div className="w-64 flex-shrink-0">
+        <Sidebar />
       </div>
 
-      <table className="w-full text-left border border-gray-200 rounded overflow-hidden">
-        <thead className="bg-gray-200 text-sm text-gray-700">
-          <tr>
-            <th className="px-4 py-2">ID</th>
-            <th className="px-4 py-2">Name</th>
-            <th className="px-4 py-2">Status</th>
-            <th className="px-4 py-2">Station</th>
-          </tr>
-        </thead>
-        <tbody>
-          {gadgets.map((gadget) => (
-            <tr
-              key={gadget.id}
-              className="cursor-pointer hover:bg-gray-100 transition text-sm"
-              onClick={() => handleRowClick(gadget)}
-            >
-              <td className="px-4 py-2">{gadget.id}</td>
-              <td className="px-4 py-2">{gadget.name}</td>
-              <td className="px-4 py-2">{gadget.status}</td>
-              <td className="px-4 py-2">{gadget.station}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      {/* Main content area */}
+      <div className="flex-1 overflow-auto p-6">
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <h1 className="text-2xl font-bold">Gadgets</h1>
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
+          >
+            Add Gadget
+          </button>
+        </div>
 
-      {isModalOpen && (
+        {/* Table */}
+        <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <table className="w-full text-left">
+            <thead className="bg-gray-300 text-sm text-gray-700">
+              <tr>
+                <th className="px-4 py-2">ID</th>
+                <th className="px-4 py-2">Name</th>
+                <th className="px-4 py-2">Status</th>
+                <th className="px-4 py-2">Station</th>
+              </tr>
+            </thead>
+            <tbody>
+              {gadgets.map((gadget) => (
+                <tr
+                  key={gadget.id}
+                  className="cursor-pointer hover:bg-gray-100 transition text-sm border-b border-gray-200 last:border-b-0"
+                  onClick={() => handleRowClick(gadget)}
+                >
+                  <td className="px-4 py-2">{gadget.id}</td>
+                  <td className="px-4 py-2">{gadget.name}</td>
+                  <td className="px-4 py-2">
+                    <span
+                      className={`px-2 py-1 rounded-full text-xs ${
+                        gadget.status === "Active"
+                          ? "bg-green-100 text-green-800"
+                          : gadget.status === "Faulty"
+                          ? "bg-red-100 text-red-800"
+                          : "bg-gray-100 text-gray-800"
+                      }`}
+                    >
+                      {gadget.status}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2">{gadget.station}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+
+        {/* Add Gadget Modal */}
         <AddItemModal
           isOpen={isModalOpen}
           onClose={() => setIsModalOpen(false)}
           title="Add New Gadget"
           onSubmit={handleAddGadget}
           fields={[
-            { name: "name", label: "Gadget Name" },
-            { name: "status", label: "Status" },
-            { name: "station", label: "Station" },
+            { name: "name", label: "Gadget Name", type: "text" },
+            { name: "status", label: "Status", type: "text" },
+            { name: "station", label: "Station", type: "text" },
           ]}
         />
-      )}
+      </div>
     </div>
   );
 }

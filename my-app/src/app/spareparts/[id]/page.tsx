@@ -42,10 +42,10 @@ export default function SparePartDetailsPage() {
   }
 
   return (
-    <div className="p-10 h-screen bg-gray-100 text-black">
+    <div className="p-10 h-screen bg-gray-100 text-black text-sm">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-700">
+          <h1 className="text-2xl font-bold text-blue-700">
             Spare Part Details
           </h1>
           <button
@@ -58,15 +58,15 @@ export default function SparePartDetailsPage() {
 
         <div className="space-y-4 text-lg">
           <div className="flex justify-between border-b pb-2">
-            <span className="font-semibold">ID:</span>
+            <span className="font-medium">ID:</span>
             <span>{part.id}</span>
           </div>
           <div className="flex justify-between border-b pb-2">
-            <span className="font-semibold">Name:</span>
+            <span className="font-medium">Name:</span>
             <span>{part.name}</span>
           </div>
           <div className="flex justify-between">
-            <span className="font-semibold">Cost:</span>
+            <span className="font-medium">Cost:</span>
             <span>KES {part.cost}</span>
           </div>
         </div>

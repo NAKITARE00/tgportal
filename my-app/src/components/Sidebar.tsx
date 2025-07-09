@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 const links = [
@@ -15,9 +16,6 @@ export default function Sidebar() {
 
   return (
     <aside className="h-screen w-64 bg-gray-900 text-white p-6">
-      <Link href="/" className="text-2xl font-bold">
-        AGRW
-      </Link>
       <nav className="space-y-4 mt-6">
         {links.map((link) => (
           <Link

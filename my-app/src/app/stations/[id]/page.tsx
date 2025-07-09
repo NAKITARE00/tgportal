@@ -42,10 +42,10 @@ export default function StationDetailsPage() {
   }
 
   return (
-    <div className="p-10 h-screen bg-gray-100 text-black">
+    <div className="p-10 h-screen bg-gray-100 text-black text-sm">
       <div className="bg-white rounded-lg shadow-lg p-8 max-w-xl mx-auto">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-700">Station Details</h1>
+          <h1 className="text-2xl font-bold text-blue-700">Station Details</h1>
           <button
             onClick={() => setIsModalOpen(true)}
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -56,19 +56,19 @@ export default function StationDetailsPage() {
 
         <div className="space-y-4 text-lg">
           <div className="flex justify-between border-b pb-2">
-            <span className="font-semibold">ID:</span>
+            <span className="font-medium">ID:</span>
             <span>{station.id}</span>
           </div>
           <div className="flex justify-between border-b pb-2">
-            <span className="font-semibold">Name:</span>
+            <span className="font-medium">Name:</span>
             <span>{station.name}</span>
           </div>
           <div className="flex justify-between border-b pb-2">
-            <span className="font-semibold">Station Code:</span>
+            <span className="font-medium">Station Code:</span>
             <span>{station.station}</span>
           </div>
           <div className="flex justify-between">
-            <span className="font-semibold">Location:</span>
+            <span className="font-medium">Location:</span>
             <span>{station.location}</span>
           </div>
         </div>

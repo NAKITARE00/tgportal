@@ -1,23 +1,31 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import {
+  ClerkProvider,
+  SignInButton,
+  SignUpButton,
+  SignedIn,
+  SignedOut,
+  UserButton,
+  UserProfile,
+} from "@clerk/nextjs";
+import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "@/components/Sidebar";
+import Link from "next/link";
+import Image from "next/image";
 
-const inter = Inter({
-  variable: "--font-inter",
+const geistSans = Geist({
+  variable: "--font-geist-sans",
   subsets: ["latin"],
-  display: "swap",
-  axes: ["opsz"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
 });
 
 export const metadata: Metadata = {
-  title: "AGRW Portal",
-  description: "",
-  // icons: [
-  //   {
-
-  //   },
-  // ],
+  title: "AGRW",
 };
 
 export default function RootLayout({
@@ -26,16 +34,33 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="flex">
-        {/* Sidebar on the left */}
-        <Sidebar />
+    <ClerkProvider>
+      <html lang="en">
+        <body
+          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        >
+          <header className="flex justify-between items-center p-4 bg-gray-900 border-b border-gray-200">
+            <SignedIn>
+              <div className="flex items-center gap-4">
+                <Link href="/" className="text-2xl font-bold">
+                  <Image
+                    src="/favicon.png"
+                    alt="AGRW Logo"
+                    width={50}
+                    height={50}
+                    className="object-cover"
+                  />
+                </Link>
+              </div>
+              <div className="flex items-center gap-4">
+                <UserButton />
+              </div>
+            </SignedIn>
+          </header>
 
-        {/* Page content */}
-        <main className="flex-1 bg-gray-100 min-h-screen p-6 overflow-y-auto">
           {children}
-        </main>
-      </body>
-    </html>
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
