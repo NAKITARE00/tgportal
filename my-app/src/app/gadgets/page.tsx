@@ -7,33 +7,32 @@ import AddItemModal from "@/components/modals/AddGadgetModal";
 const mockGadgets = [
   { id: 1, name: "Router X", status: "Active", station: "Shell Westlands" },
   { id: 2, name: "POS Alpha", status: "Faulty", station: "Total Karen" },
-  { id: 5, name: "Router X", status: "Active", station: "Shell Westlands" },
-  { id: 6, name: "POS Alpha", status: "Faulty", station: "Total Karen" },
-  { id: 7, name: "Router X", status: "Active", station: "Shell Westlands" },
-  { id: 8, name: "POS Alpha", status: "Faulty", station: "Total Karen" },
+  { id: 3, name: "Scanner Pro", status: "Inactive", station: "Oil Libya" },
+  { id: 4, name: "Router X", status: "Active", station: "Shell Westlands" },
+  { id: 5, name: "POS Alpha", status: "Faulty", station: "Total Karen" },
+  { id: 6, name: "Scanner Pro", status: "Inactive", station: "Oil Libya" },
 ];
 
 export default function GadgetsPage() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [gadgets, setGadgets] = useState(mockGadgets);
   const router = useRouter();
 
-  const handleRowClick = (id: number) => {
-    router.push(`/gadgets/${id}`);
+  const handleAddGadget = (formData: any) => {
+    const newGadget = {
+      id: gadgets.length + 1,
+      ...formData,
+    };
+    setGadgets([...gadgets, newGadget]);
   };
 
-  const gadgetFields = [
-    { name: "name", label: "Gadget Name" },
-    { name: "status", label: "Status" },
-    { name: "station", label: "Station" },
-  ];
-
-  const handleAddGadget = (formData: any) => {
-    console.log("New gadget data:", formData);
-    alert(`Gadget added: ${JSON.stringify(formData)}`);
+  const handleRowClick = (gadget: any) => {
+    localStorage.setItem("selectedGadget", JSON.stringify(gadget));
+    router.push(`/gadgets/${gadget.id}`);
   };
 
   return (
-    <div className="relative p-6 h-screen bg-white text-black shadow-md rounded-lg">
+    <div className="p-6 h-screen bg-white text-black shadow-md rounded-lg">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Gadgets</h1>
         <button
@@ -44,8 +43,8 @@ export default function GadgetsPage() {
         </button>
       </div>
 
-      <table className="w-full text-left border border-gray-200">
-        <thead className="bg-gray-300">
+      <table className="w-full text-left border border-gray-200 rounded overflow-hidden">
+        <thead className="bg-gray-200 text-sm text-gray-700">
           <tr>
             <th className="px-4 py-2">ID</th>
             <th className="px-4 py-2">Name</th>
@@ -54,11 +53,11 @@ export default function GadgetsPage() {
           </tr>
         </thead>
         <tbody>
-          {mockGadgets.map((gadget) => (
+          {gadgets.map((gadget) => (
             <tr
               key={gadget.id}
-              className="border-t hover:bg-gray-100 cursor-pointer"
-              onClick={() => handleRowClick(gadget.id)}
+              className="cursor-pointer hover:bg-gray-100 transition text-sm"
+              onClick={() => handleRowClick(gadget)}
             >
               <td className="px-4 py-2">{gadget.id}</td>
               <td className="px-4 py-2">{gadget.name}</td>
@@ -75,7 +74,11 @@ export default function GadgetsPage() {
           onClose={() => setIsModalOpen(false)}
           title="Add New Gadget"
           onSubmit={handleAddGadget}
-          fields={gadgetFields}
+          fields={[
+            { name: "name", label: "Gadget Name" },
+            { name: "status", label: "Status" },
+            { name: "station", label: "Station" },
+          ]}
         />
       )}
     </div>

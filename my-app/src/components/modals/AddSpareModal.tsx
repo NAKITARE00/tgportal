@@ -10,6 +10,7 @@ interface AddSparePartModalProps {
 export default function AddSparePartModal({
   isOpen,
   onClose,
+
   onSubmit,
 }: AddSparePartModalProps) {
   const [formData, setFormData] = useState({ name: "", cost: "" });

@@ -1,26 +1,37 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import AddItemModal from "@/components/modals/AddSpareModal";
+
+const mockParts = [
+  { id: 1, name: "Printer Roll", cost: 500 },
+  { id: 2, name: "Sensor Cable", cost: 1200 },
+  { id: 3, name: "Thermal Head", cost: 2500 },
+  { id: 4, name: "Motherboard", cost: 9000 },
+  { id: 5, name: "Screen Panel", cost: 3000 },
+];
 
 export default function SparePartsPage() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [parts, setParts] = useState([
-    { id: 1, name: "Printer Roll", cost: 500 },
-    { id: 2, name: "Sensor Cable", cost: 1200 },
-    { id: 4, name: "Printer Roll", cost: 500 },
-    { id: 5, name: "Sensor Cable", cost: 1200 },
-    { id: 6, name: "Printer Roll", cost: 500 },
-    { id: 7, name: "Sensor Cable", cost: 1200 },
-  ]);
+  const [parts, setParts] = useState(mockParts);
+  const router = useRouter();
 
   const handleAddPart = (formData: any) => {
-    setParts([...parts, { id: parts.length + 1, ...formData }]);
+    const newPart = {
+      id: parts.length + 1,
+      ...formData,
+    };
+    setParts([...parts, newPart]);
+  };
+
+  const handleRowClick = (part: any) => {
+    localStorage.setItem("selectedSparePart", JSON.stringify(part));
+    router.push(`/spareparts/${part.id}`);
   };
 
   return (
-    <div className="relative p-6 h-screen bg-white text-black shadow-md rounded-lg">
-      {/* Header */}
+    <div className="p-6 h-screen bg-white text-black shadow-md rounded-lg">
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Spare Parts</h1>
         <button
@@ -31,25 +42,29 @@ export default function SparePartsPage() {
         </button>
       </div>
 
-      {/* Column Headers */}
-      <div className="grid grid-cols-3 font-semibold bg-gray-300 px-4 py-2 rounded-t">
-        <div>Id</div>
-        <div>Name</div>
-        <div>Cost (KES)</div>
-      </div>
+      <table className="w-full text-left border border-gray-200 rounded overflow-hidden">
+        <thead className="bg-gray-200 text-sm text-gray-700">
+          <tr>
+            <th className="px-4 py-2">ID</th>
+            <th className="px-4 py-2">Name</th>
+            <th className="px-4 py-2">Cost (KES)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {parts.map((part) => (
+            <tr
+              key={part.id}
+              className="cursor-pointer hover:bg-gray-100 transition text-sm"
+              onClick={() => handleRowClick(part)}
+            >
+              <td className="px-4 py-2">{part.id}</td>
+              <td className="px-4 py-2">{part.name}</td>
+              <td className="px-4 py-2">KES {part.cost}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-      {/* Data Rows */}
-      <div className="divide-y border border-gray-300 rounded-b">
-        {parts.map((part) => (
-          <div key={part.id} className="grid grid-cols-3 px-4 py-2">
-            <div>{part.id}</div>
-            <div>{part.name}</div>
-            <div>{part.cost}</div>
-          </div>
-        ))}
-      </div>
-
-      {/* Modal */}
       <AddItemModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}

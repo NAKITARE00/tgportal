@@ -1,61 +1,84 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import AddItemModal from "@/components/modals/AddIssueModal";
+
+const mockIssues = [
+  { id: 1, name: "POS Failure", issue: "Not turning on", gadget_id: 1 },
+  { id: 2, name: "Sensor Fault", issue: "Reading errors", gadget_id: 2 },
+  { id: 4, name: "POS Failure", issue: "Not turning on", gadget_id: 1 },
+  { id: 5, name: "Sensor Fault", issue: "Reading errors", gadget_id: 2 },
+  { id: 6, name: "POS Failure", issue: "Not turning on", gadget_id: 1 },
+  { id: 7, name: "Sensor Fault", issue: "Reading errors", gadget_id: 2 },
+];
 
 export default function IssuesPage() {
   const [modalOpen, setModalOpen] = useState(false);
-  const [issues, setIssues] = useState([
-    { id: 1, name: "POS Failure", issue: "Not turning on", gadget_id: 1 },
-    { id: 2, name: "Sensor Fault", issue: "Reading errors", gadget_id: 2 },
-    { id: 4, name: "POS Failure", issue: "Not turning on", gadget_id: 1 },
-    { id: 5, name: "Sensor Fault", issue: "Reading errors", gadget_id: 2 },
-    { id: 6, name: "POS Failure", issue: "Not turning on", gadget_id: 1 },
-    { id: 7, name: "Sensor Fault", issue: "Reading errors", gadget_id: 2 },
-  ]);
+  const [issues, setIssues] = useState(mockIssues);
+  const router = useRouter();
 
   const handleAddIssue = (formData: any) => {
-    setIssues([...issues, { id: issues.length + 1, ...formData }]);
+    const newIssue = {
+      id: issues.length + 1,
+      ...formData,
+    };
+    setIssues([...issues, newIssue]);
+  };
+
+  const handleRowClick = (issue: any) => {
+    localStorage.setItem("selectedIssue", JSON.stringify(issue));
+    router.push(`/issues/${issue.id}`);
   };
 
   return (
-    <div className="relative p-6 h-screen bg-white text-black shadow-md rounded-lg">
+    <div className="p-6 h-screen bg-white text-black shadow-md rounded-lg">
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
         <h1 className="text-2xl font-bold">Issues</h1>
         <button
           onClick={() => setModalOpen(true)}
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+          className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 transition"
         >
           Add Issue
         </button>
       </div>
 
-      <div className="grid grid-cols-4 font-semibold bg-gray-300 px-4 py-2 rounded-t">
-        <div>Id</div>
-        <div>Name</div>
-        <div>Issue</div>
-        <div>Gadget ID</div>
-      </div>
+      {/* Table */}
+      <table className="w-full text-left border border-gray-200 rounded overflow-hidden">
+        <thead className="bg-gray-300 text-sm text-gray-700">
+          <tr>
+            <th className="px-4 py-2">ID</th>
+            <th className="px-4 py-2">Name</th>
+            <th className="px-4 py-2">Description</th>
+            <th className="px-4 py-2">Gadget ID</th>
+          </tr>
+        </thead>
+        <tbody>
+          {issues.map((issue) => (
+            <tr
+              key={issue.id}
+              className="cursor-pointer hover:bg-gray-100 transition text-sm"
+              onClick={() => handleRowClick(issue)}
+            >
+              <td className="px-4 py-2">{issue.id}</td>
+              <td className="px-4 py-2">{issue.name}</td>
+              <td className="px-4 py-2">{issue.issue}</td>
+              <td className="px-4 py-2">{issue.gadget_id}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
 
-      <div className="divide-y border border-gray-300 rounded-b">
-        {issues.map((issue) => (
-          <div key={issue.id} className="grid grid-cols-4 px-4 py-2">
-            <div>{issue.id}</div>
-            <div>{issue.name}</div>
-            <div>{issue.issue}</div>
-            <div>{issue.gadget_id}</div>
-          </div>
-        ))}
-      </div>
-
+      {/* Modal */}
       <AddItemModal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         title="Add New Issue"
         onSubmit={handleAddIssue}
         fields={[
-          { name: "name", label: "Issue Name" },
-          { name: "issue", label: "Description" },
+          { name: "name", label: "Issue Name", type: "text" },
+          { name: "issue", label: "Description", type: "text" },
           { name: "gadget_id", label: "Gadget ID", type: "number" },
         ]}
       />

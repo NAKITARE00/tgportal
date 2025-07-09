@@ -1,17 +1,23 @@
 "use client";
 
-import Sidebar from "@/components/Sidebar";
+import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex bg-gray-100">
-      <main className="flex-1 p-6">
-        <h1 className="text-2xl font-bold mb-4 text-black">
-          Welcome to AGRW Portal
-        </h1>
-        <p className="text-black">
-          Select a section from the sidebar to begin.
-        </p>
+    <div className="flex bg-gradient-to-br from-gray-100 to-white min-h-screen">
+      <main className="flex-1 flex items-center justify-center py-12">
+        <div className="bg-white shadow-2xl rounded-xl p-10 max-w-2xl w-full text-center border border-blue-100">
+          {/* Logo Section */}
+          <div className="flex flex-col items-center mb-8">
+            <Image
+              src="/favicon.png"
+              alt="AGRW Logo"
+              width={200}
+              height={200}
+              className="object-cover"
+            />
+          </div>
+        </div>
       </main>
     </div>
   );
