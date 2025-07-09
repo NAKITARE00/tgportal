@@ -6,12 +6,16 @@ interface AddIssueModalProps {
   isOpen: boolean;
   onClose: () => void;
   onSubmit: (data: any) => void;
+  title: string;
+  fields: any[];
 }
 
 export default function AddIssueModal({
   isOpen,
   onClose,
   onSubmit,
+  title,
+  fields,
 }: AddIssueModalProps) {
   const [formData, setFormData] = useState({
     name: "",
